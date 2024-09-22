@@ -10,7 +10,7 @@ trigger GardenTrigger on CAMPX__Garden__c (before insert, after insert, before u
         }
 
         when BEFORE_UPDATE {
-            //GardenTriggerHandler.setManagerStartDate(Trigger.new, Trigger.oldMap);
+            GardenTriggerHandler.setManagerStartDate(Trigger.new, Trigger.oldMap);
         }
 
         when AFTER_UPDATE {

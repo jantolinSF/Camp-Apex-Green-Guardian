@@ -19,16 +19,16 @@ public with sharing class GardenTriggerHandler {
         }
     }
 
-    /*public static void setManagerStartDate( List<CAMPX__Garden__c> newGardens, Map<Id, CAMPX__Garden__c> oldGardenMap ){
+    public static void setManagerStartDate( List<CAMPX__Garden__c> newGardens, Map<Id, CAMPX__Garden__c> oldGardenMap ){
         for( CAMPX__Garden__c garden : newGardens){
-            if ( garden.CAMPX__Manager__c != null && oldGardenMap.get(garden.Id) == null 
-                    || garden.CAMPX__Manager__c != oldGardenMap.get(garden.Id) ){
+            if ( (garden.CAMPX__Manager__c != null && oldGardenMap.get(garden.Id).CAMPX__Manager__c == null) 
+                    || garden.CAMPX__Manager__c != oldGardenMap.get(garden.Id).CAMPX__Manager__c ){
                 garden.CAMPX__Manager_Start_Date__c = Date.today();
-            } else if ( garden.CAMPX__Manager__c == null && oldGardenMap.get(garden.Id) != null) {
+            } else if ( garden.CAMPX__Manager__c == null) {
                 garden.CAMPX__Manager_Start_Date__c = null;
             }
         }
-    }*/
+    }
 
     public static void createManagerTask( List<CAMPX__Garden__c> newGardens ){
 

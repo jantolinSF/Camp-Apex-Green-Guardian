@@ -42,14 +42,33 @@ public with sharing class PlantTriggerHandler {
         }
     }
 
+    public static void calculateTotalPlantCountOnInsertOrDelete(List<CAMPX__Plant__c> plants){
+        Set<Id> gardenIds = new Set<Id>();
 
-    public static void calculateTotalPlantCount(List<CAMPX__Plant__c> newPlants){
+        for( CAMPX__Plant__c plant : plants ){
+            gardenIds.add(plant.CAMPX__Garden__c);
+        }
+
+        calculateTotalPlantCount(gardenIds);
+
+    }
+
+
+    public static void calculateTotalPlantCountOnUpdate(List<CAMPX__Plant__c> newPlants, Map<Id, CAMPX__Plant__c> oldPlantMap){
 
         Set<Id> gardenIds = new Set<Id>();
 
-        for( CAMPX__Plant__c plant : newPlants ){
-            gardenIds.add(plant.CAMPX__Garden__c);
+        for(CAMPX__Plant__c plant : newPlants){
+            if( plant.CAMPX__Garden__c != oldPlantMap.get(plant.Id).CAMPX__Garden__c ){
+                gardenIds.add(plant.CAMPX__Garden__c);
+                gardenIds.add(oldPlantMap.get(plant.Id).CAMPX__Garden__c);
+            }
         }
+
+        calculateTotalPlantCount(gardenIds);
+    }
+
+    private static void calculateTotalPlantCount(Set<Id> gardenIds){
 
         List<CAMPX__Garden__c> relatedGardens = [
             SELECT Id, CAMPX__Total_Plant_Count__c,
@@ -59,9 +78,10 @@ public with sharing class PlantTriggerHandler {
         ];
 
         for( CAMPX__Garden__c garden : relatedGardens ){
-
-            
-
+            garden.CAMPX__Total_Plant_Count__c = garden.CAMPX__Plants__r.size();
+            System.debug('TOTAL PLANT COUNT:: ' + garden.CAMPX__Total_Plant_Count__c);
         }
+
+        update relatedGardens;
     }
 }
